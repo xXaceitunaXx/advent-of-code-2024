@@ -18,12 +18,12 @@ differences numbers = map abs $ zipWith (+) (map negate $ sort $ evens numbers) 
 ocurrences :: Int -> [Int] -> Int
 ocurrences numero lista = length $ filter (== numero) lista
 
-disjointCounts :: [Int] -> [Int] -> [(Int, Int)]
-disjointCounts from list = [(n, ocurrences n list) | n <- from]
+allCounts :: [Int] -> [Int] -> [(Int, Int)]
+allCounts from list = [(n, ocurrences n list) | n <- from]
 
 main :: IO ()
 main = do
   input <- readFile "input1.txt"
   print $ sum $ differences $ parseNumbers input
 
-  print $ sum $ map (uncurry (*)) $ disjointCounts (evens $ parseNumbers input) (odds $ parseNumbers input)
+  print $ sum $ map (uncurry (*)) $ allCounts (evens $ parseNumbers input) (odds $ parseNumbers input)
