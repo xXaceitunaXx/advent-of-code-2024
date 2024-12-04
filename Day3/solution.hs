@@ -6,7 +6,7 @@ getMultiplications :: String -> [String]
 getMultiplications line = getAllTextMatches (line =~ "mul\\(([0-9]+),([0-9]+)\\)" :: AllTextMatches [] String)
 
 extractNumbers :: [String] -> [(Int, Int)]
-extractNumbers multiplications = map extractPair multiplications
+extractNumbers multiplications = map extractPair
   where
     extractPair mul = let (_, _, _, [a, b]) = mul =~ "mul\\(([0-9]+),([0-9]+)\\)" :: (String, String, String, [String])
                       in (read a, read b)
@@ -17,13 +17,13 @@ solve line = sum $ map (uncurry (*)) $ extractNumbers $ getMultiplications line
 evens :: [String] -> [String]
 evens [] = []
 evens [x] = [x]
-evens (x : y : xs) = x : (evens xs)
+evens (x : y : xs) = x : evens xs
 
 extractDoS :: String -> String
 extractDoS line = concat $ (\(x:xs) -> xs) $ splitOn "do()" line
 
 transformInput :: String -> String
-transformInput input = concat $ ((head splited) : (map extractDoS splited))
+transformInput input = concat $ head splited : map extractDoS splited
     where splited = splitOn "don't()" input
 
 main :: IO ()
