@@ -1,4 +1,4 @@
-import Data.List.Split
+import Data.List.Split (splitOn)
 import Data.List (sort, intersect, delete)
 
 heads :: [a] -> [[a]]
