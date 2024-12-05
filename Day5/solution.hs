@@ -1,7 +1,5 @@
 import Data.List.Split
-import Data.List (sort, intersect, delete, elemIndex)
-import Data.Maybe (fromJust, isJust)
-import Data.Foldable (find)
+import Data.List (sort, intersect, delete)
 
 heads :: [a] -> [[a]]
 heads [] = [[]]
