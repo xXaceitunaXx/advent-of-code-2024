@@ -1,5 +1,7 @@
 import Data.List.Split
-import Data.List (sort, intersect)
+import Data.List (sort, intersect, delete, elemIndex)
+import Data.Maybe (fromJust, isJust)
+import Data.Foldable (find)
 
 heads :: [a] -> [[a]]
 heads [] = [[]]
@@ -17,9 +19,21 @@ validManual rules manual = all (\x -> validNumber rules x (x !! (length x - 1)))
 middleElement :: [Int] -> Int
 middleElement list = list !! (length list `div` 2)
 
+findGreatest :: [[Int]] -> [Int] -> Int
+findGreatest rules manual = head $ filter (\x -> all (notElem x . appliableRules rules) manual) manual
+
+reorder :: [[Int]] -> [Int] -> [Int]
+reorder rules [] = []
+reorder rules manual = greatest : reorder rules rest
+  where
+    greatest = findGreatest rules manual
+    rest = delete greatest manual
+
 main :: IO ()
 main = do
     input <- readFile "input.txt"
     let rules = map (map (read :: String -> Int) . splitOn "|") $ lines $ head $ splitOn "\n\n" input
     let manuals = map (map (read :: String -> Int) . splitOn ",") $ lines $ splitOn "\n\n" input !! 1
+
     print $ sum $ map middleElement $ filter (validManual rules) manuals
+    print $ sum $ map (middleElement . reorder rules) (filter (not . validManual rules) manuals)
